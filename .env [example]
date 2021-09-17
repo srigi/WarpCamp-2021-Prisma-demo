@@ -1,0 +1,8 @@
+BIGTABLE_INSTANCE_ID=develop
+DATABASE_URL="postgresql://postgres:secret@localhost:5432/postgres?schema=public"
+GOOG_PROJECT_ID=default
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/gserviceaccount.com.json
+GOOGLE_CLIENT_ID=secret
+GOOGLE_CLIENT_SECRET=secret
+NODE_ENV=development
+#USE_BIG_TABLE=1

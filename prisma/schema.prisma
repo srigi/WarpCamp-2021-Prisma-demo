@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum OAuth2Provider {
+  Google
+  Slack
+}
+
+model Token {
+  id                 String  @db.Uuid @id @default(uuid())
+  userId             String  @db.Uuid
+  provider           OAuth2Provider
+  providerAccountId  String
+  tokenType          String?
+  scope              String?
+  accessToken        String?
+  idToken            String?
+  refreshToken       String?
+  expiresAt          DateTime?
+
+  user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model User {
+  id           String   @db.Uuid @id @default(uuid())
+  workspaceId  String?  @db.Uuid
+  email        String   @unique
+  name         String?
+  image        String?
+
+  tokens       Token[]
+  workspace    Workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Workspace {
+  id      String  @db.Uuid @id @default(uuid())
+  domain  String  @unique
+  name    String
+  status  String
+
+  users   User[]
+}
